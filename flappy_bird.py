@@ -19,13 +19,25 @@ import pygame
 pygame.init()
 
 # create display surface
-window_size = pygame.display.set_mode((800, 600))
+disp_h = 500
+disp_w = 800
+black = (0, 0, 0)
+white = (255, 255, 255)
+red = (255, 0, 0)
+green = (0, 255, 255)
+blue = (0, 0, 255)
+
+window_size = pygame.display.set_mode((disp_w, disp_h))
 
 # game title
 pygame.display.set_caption('Flappy Bird Clone')
 
 # fps display
 clock = pygame.time.Clock()
+
+# f_bird images
+f_bird = pygame.image.load('f_bird.png')
+f_bird_down = pygame.image.load('f_bird_down.png')
 
 # debug events
 debug = True
