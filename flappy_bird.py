@@ -14,3 +14,40 @@
 # Hold onto a high score.
 # Create frame animations for the bird.
 
+import pygame
+
+pygame.init()
+
+# create display surface
+window_size = pygame.display.set_mode((800, 600))
+
+# game title
+pygame.display.set_caption('Flappy Bird Clone')
+
+# fps display
+clock = pygame.time.Clock()
+
+# debug events
+debug = True
+
+# game logic
+hitPipe = False
+
+while not hitPipe:
+    # utilize pygames event collection
+    for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                hitPipe = True
+            if debug:
+                # print out events to console
+                print(event)
+
+    # update screen
+    pygame.display.update()
+
+    # fps
+    clock.tick(60)
+
+pygame.quit()
+quit()
+
