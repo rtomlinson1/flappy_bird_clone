@@ -39,6 +39,10 @@ pygame.display.set_caption('Flappy Bird Clone')
 # fps display
 clock = pygame.time.Clock()
 
+def obj_dodged(count):
+    font = pygame.font.SysFont(None, 25)
+    text = font.render('Score: ' + str(count), True, black)
+    game_display.blit(text, (5, 5))
 
 def baths(bath_x, bath_y, bath_w, bath_h, bath_color):
     pygame.draw.rect(game_display, bath_color, [bath_x, bath_y, bath_w, bath_h])
@@ -53,6 +57,7 @@ def bird_pic(pic):
 f_bird = bird_pic('f_bird_down.png')
 
 bird_h = 66
+bird_w = 125
 
 # bird bath for obstacle
 bath = pygame.image.load('b_bath.png')
@@ -74,7 +79,7 @@ def text_objects(text, font):
 
 # endgame message
 def message_display(text):
-    large_text = pygame.font.Font('freesansbold.ttf', 115)
+    large_text = pygame.font.Font('freesansbold.ttf', 50)
     text_surface, text_rectangle = text_objects(text, large_text)
     text_rectangle.center = ((disp_w/2), (disp_h/2))
     game_display.blit(text_surface, text_rectangle)
@@ -85,8 +90,8 @@ def message_display(text):
     main_loop()
 
 
-def hit_pipe():
-    message_display('You crashed!')
+def hit_pipe(score):
+    message_display('You made it past ' + str(score) + ' birdbath(s)!')
 
 
 def main_loop():
@@ -120,12 +125,12 @@ def main_loop():
     bath_width4 = 75
     bath_height4 = 200
 
-
-
+    counter = 0
     # game logic
     exit_game = False
     y_change = 3
     while not exit_game:
+
         # utilize pygames event collection
 
         for event in pygame.event.get():
@@ -159,37 +164,29 @@ def main_loop():
         baths(bath_start_x2, bath_start_y2, bath_width2, bath_height2, red)
         bath_start_x2 -= bath_speed2
 
-        baths(bath_start_x3, bath_start_y3, bath_width3, bath_height3, black)
-        bath_start_x3 -= bath_speed
-
-        baths(bath_start_x4, bath_start_y4, bath_width4, bath_height4, black)
-        bath_start_x4 -= bath_speed
-
         bird(x, y)
-
+        obj_dodged(counter)
         # define boundaries
         if y > (disp_h - bird_h) or y < 0:
             y_change = 0
-            hit_pipe()
+            hit_pipe(counter)
 
         if bath_start_x < -60:
             bath_start_x = random.randrange(800, 1600)
+            counter += 1
+            bath_speed += .2
 
         if bath_start_x2 < -60:
             bath_start_x2 = random.randrange(800, 1600)
 
-        if bath_start_x3 < -60:
-            bath_start_x3 = random.randrange(800, 1600)
-
-        if bath_start_x4 < -60:
-            bath_start_x4 = random.randrange(800, 1600)
 
         # logic for collisions
-        if x < bath_start_x + bird_h:
+        # if the left upper corner of the bird touches the top right corner of the pipe
+        if x > bath_start_x - bird_w and x < bath_start_x + 75 or x > bath_start_x and x < bath_start_x + 75:
             print(1)
-            if y > bath_start_y and y < bath_start_y + bath_height or x + bird_h > bath_start_y and y + bird_h < bath_start_y + bath_height:
+            if y > bath_start_y:
                 print(2)
-                hit_pipe()
+                hit_pipe(counter)
 
         # update screen
         pygame.display.update()
