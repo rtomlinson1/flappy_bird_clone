@@ -26,7 +26,7 @@ disp_w = 800
 black = (0, 0, 0)
 white = (255, 255, 255)
 red = (255, 0, 0)
-green = (0, 255, 255)
+green = (0, 255, 0)
 blue = (0, 0, 255)
 sky = (183, 233, 255)
 
@@ -188,6 +188,11 @@ def main_loop():
                 print(2)
                 hit_pipe(counter)
 
+        if x > bath_start_x2 - bird_w and x < bath_start_x2 + 75 or x > bath_start_x2 and x < bath_start_x2 + 75:
+            print(3)
+            if y < bath_start_y2 + 175:
+                print(4)
+                hit_pipe(counter)
         # update screen
         pygame.display.update()
 
